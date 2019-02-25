@@ -1,18 +1,28 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <head-top sign-in-up="home">
+      <template v-slot:logo>
+        <span class="head_logo">ele.me</span>
+      </template>
+    </head-top>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+<script lang="ts">
+import HeadTop from "../components/head.vue";
 
 export default {
-  name: "home",
-  components: {
-    HelloWorld
-  }
-};
+    components:{
+        HeadTop
+    }
+}
 </script>
+
+<style lang="scss">
+@import "../assets/styles/mixin";
+.head_logo {
+  @include ct;
+  font-weight: 400;
+  @include sc(32px, #fff);
+}
+</style>
