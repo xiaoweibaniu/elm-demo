@@ -1,5 +1,9 @@
 # vue-elm
 
+## 待办事项
+
+[ ] 优化svg图片使用方式（参考文章链接https://www.jb51.net/article/151922.htm，http://www.manongjc.com/article/16195.html）
+
 ## Project setup
 ```
 yarn install
