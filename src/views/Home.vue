@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import HeadTop from "../components/head.vue";
 
 export default {
