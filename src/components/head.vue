@@ -2,11 +2,38 @@
   <header id="head_top">
     <slot name="logo"></slot>
     <slot name="search"></slot>
-    <router-link to="/login" class="head_login">
-      <span class="login_span">登录 | 注册</span>
+    <!-- 回退按钮 start -->
+    <section class="head_goback" v-if="goBack" @click="$router.go(-1)">
+      <svg
+        width="100%"
+        height="100%"
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+      >
+        <polyline
+          points="12,18 4,9 12,0"
+          style="fill:none;stroke:rgb(255,255,255);stroke-width:2"
+        ></polyline>
+      </svg>
+    </section>
+    <!-- 回退按钮 end -->
+    <router-link
+      :to="userInfo ? '/profile' : '/login'"
+      v-if="signInUp"
+      class="head_login"
+    >
+      <!-- 人员图标 start -->
+      <svg class="user_avatar" v-if="userInfo">
+        <use
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xlink:href="#user"
+        ></use>
+      </svg>
+      <!-- 人员图标 end -->
+      <span class="login_span" v-else>登录 | 注册</span>
     </router-link>
-    <section class="title_head ellipsis">
-      <span class="title_text">白银</span>
+    <section class="title_head ellipsis" v-if="headTitle">
+      <span class="title_text">{{ headTitle }}</span>
     </section>
     <slot name="edit"></slot>
     <slot name="msite-title"></slot>
