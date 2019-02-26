@@ -15,18 +15,20 @@
   </header>
 </template>
 
-<script lang="ts">
+<script>
 import { mapState, mapActions } from "vuex";
 
 export default {
-  data() {},
+  data() {
+    return {};
+  },
   props: ["signInUp", "headTitle", "goBack"],
   mounted() {
     // 获取用户信息
     this.getUserInfo();
   },
-  computed: mapState(['userInfo']),
-  methods: {}
+  computed: mapState(["userInfo"]),
+  methods: mapActions(["getUserInfo"])
 };
 </script>
 

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {GET_USERINFO} from "./mutation-types";
+import { GET_USERINFO } from "./mutation-types";
+import { getUser } from "./helpers/getData";
 
 Vue.use(Vuex);
 
@@ -25,9 +26,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async getUserInfo({ commit}) {
+    async getUserInfo({ commit }) {
       let res = await getUser();
-      commit("GET_USERINFO", res);
+      commit("GET_USERINFO", res | { message: "暂时没有任何用户信息" });
     }
   }
 });
