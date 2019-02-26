@@ -12,10 +12,10 @@
 import HeadTop from "../components/head.vue";
 
 export default {
-    components:{
-        HeadTop
-    }
-}
+  components: {
+    HeadTop
+  }
+};
 </script>
 
 <style lang="scss">

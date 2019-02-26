@@ -18,11 +18,16 @@
 <script lang="ts">
 import { mapState, mapActions } from "vuex";
 
-export default{
-    data(){
-
-    }
-}
+export default {
+  data() {},
+  props: ["signInUp", "headTitle", "goBack"],
+  mounted() {
+    // 获取用户信息
+    this.getUserInfo();
+  },
+  computed: mapState(['userInfo']),
+  methods: {}
+};
 </script>
 
 <style lang="scss">
