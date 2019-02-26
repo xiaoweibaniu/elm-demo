@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import svgIcon from "./components/common/svg";
 
 export default {
