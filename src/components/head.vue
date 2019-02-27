@@ -71,12 +71,22 @@ export default {
   background-color: $blue;
 }
 
+.head_goback {
+  @include wh(30px, 36px);
+  @include ct;
+}
+
 .head_login {
   @include ct;
   right: 20px;
   @include sc(30px, #fff);
   .login_span {
     color: #fff;
+  }
+  .user_avatar {
+    @include wh(32px, 35px);
+    margin-top: 12px;
+    fill: #fff;
   }
 }
 
