@@ -24,8 +24,9 @@ export const getUser = () => {
  * @returns {Promise<AxiosResponse<any> | never | void>}
  */
 export const cityGuess = () => {
+  // TODO: 项目环境对参数guess拒绝代理，留待详细测试
   return axios
-    .get("/v1/cities", {
+    .get("http://cangdu.org:8001/v1/cities", {
       params: {
         type: "guess"
       }

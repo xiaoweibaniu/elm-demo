@@ -35,15 +35,24 @@
     </section>
     <section class="group_city_container">
       <ul class="letter_group">
-        <li class="letter_item ignore">
+        <li
+          class="letter_item ignore"
+          v-for="(value, key, index) in sortGroupCity"
+          :key="key"
+        >
           <h4 class="city_title">
-            <span>（按字母排序）</span>
+            {{ key }}
+            <span v-if="index === 0">（按字母排序）</span>
           </h4>
           <ul class="city_container city_list clear">
-            <router-link tag="li" to="">白银</router-link>
-            <router-link tag="li" to="">白银</router-link>
-            <router-link tag="li" to="">白银</router-link>
-            <router-link tag="li" to="">白银</router-link>
+            <router-link
+              tag="li"
+              v-for="item in value"
+              :to="'/city/' + item.id"
+              :key="item.id"
+              class="ellipsis"
+              >{{ item.name }}</router-link
+            >
           </ul>
         </li>
       </ul>
@@ -88,6 +97,20 @@ export default {
     // 点击logo图标刷新页面
     reload() {
       window.location.reload();
+    }
+  },
+  computed: {
+    // 将获取的数据按照A-Z字母开头排序
+    sortGroupCity() {
+      let sortObj = {};
+      for (let i = 65; i < 90; i++) {
+        if (this.groupCity[String.fromCharCode(i)]) {
+          sortObj[String.fromCharCode(i)] = this.groupCity[
+            String.fromCharCode(i)
+          ];
+        }
+      }
+      return sortObj;
     }
   }
 };
