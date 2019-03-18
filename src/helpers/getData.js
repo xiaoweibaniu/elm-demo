@@ -32,7 +32,6 @@ export const cityGuess = () => {
       }
     })
     .then(response => {
-      console.log(response);
       return response.data;
     })
     .catch(error => console.log(error));
@@ -64,6 +63,41 @@ export const groupCity = () => {
     .get("/v1/cities", {
       params: {
         type: "group"
+      }
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => console.log(error));
+};
+
+/**
+ * 获取当前定位城市
+ * @param cityId
+ * @returns {Promise<AxiosResponse<any> | never | void>}
+ */
+export const currentCity = cityId => {
+  return axios
+    .get("/v1/cities/" + cityId)
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => console.log(error));
+};
+
+/**
+ * 搜索当前城市符合该关键词的商户
+ * @param cityId
+ * @param value
+ * @returns {Promise<AxiosResponse<any> | never | void>}
+ */
+export const searchProduct = (cityId, value) => {
+  return axios
+    .get("/v1/pois", {
+      params: {
+        type: "search",
+        city_id: cityId,
+        keyword: value
       }
     })
     .then(response => {
