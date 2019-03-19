@@ -87,8 +87,8 @@ export const currentCity = cityId => {
 
 /**
  * 搜索当前城市符合该关键词的商户
- * @param cityId
- * @param value
+ * @param cityId 城市id
+ * @param value 搜索关键字
  * @returns {Promise<AxiosResponse<any> | never | void>}
  */
 export const searchProduct = (cityId, value) => {
@@ -98,6 +98,56 @@ export const searchProduct = (cityId, value) => {
         type: "search",
         city_id: cityId,
         keyword: value
+      }
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => console.log(error));
+};
+
+/**
+ * 获取图片验证码
+ * @returns {Promise<AxiosResponse<any> | never | void>}
+ */
+export const getCaptchaCode = () => {
+  return axios
+    .post("/v1/captchas", {})
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => console.log(error));
+};
+
+/**
+ * 获取短信验证码
+ * @param phone 手机账号
+ * @returns {Promise<AxiosResponse<any> | never | void>}
+ */
+export const getMobileCode = phone => {
+  return axios
+    .post("/v4/mobile/verify_code/send", {
+      moble: phone,
+      scene: "login",
+      type: "sms"
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => console.log(error));
+};
+
+/**
+ * 检测用户是否存在
+ * @param phone 手机账号
+ * @param type 账号类型[mobile]
+ */
+export const checkUser = (phone, type) => {
+  axios
+    .get("/v1/users/exists", {
+      params: {
+        [type]: phone,
+        type
       }
     })
     .then(response => {

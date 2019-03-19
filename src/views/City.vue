@@ -144,6 +144,7 @@ export default {
 
 <style lang="scss">
 @import "../assets/styles/mixin";
+
 .p-c-20 {
   padding: 0 20px;
 }
