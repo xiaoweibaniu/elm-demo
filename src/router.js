@@ -5,6 +5,7 @@ import Home from "./views/Home.vue";
 import City from "./views/City";
 import Login from "./views/Login";
 import Forget from "./views/Forget";
+import Profile from "./views/Profile";
 
 Vue.use(Router);
 
@@ -29,6 +30,11 @@ export default new Router({
       path: "/forget",
       name: "forget",
       component: Forget
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: Profile
     }
   ]
 });
