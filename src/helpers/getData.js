@@ -143,12 +143,31 @@ export const getMobileCode = phone => {
  * @param type 账号类型[mobile]
  */
 export const checkUser = (phone, type) => {
-  axios
+  return axios
     .get("/v1/users/exists", {
       params: {
         [type]: phone,
         type
       }
+    })
+    .then(response => {
+      return response.data;
+    })
+    .catch(error => console.log(error));
+};
+
+/**
+ * 账号登录方式
+ * @param username 账号
+ * @param password 密码
+ * @param captcha_code 验证码
+ */
+export const accountLogin = (username, password, captcha_code) => {
+  return axios
+    .post("/v2/login", {
+      username,
+      password,
+      captcha_code
     })
     .then(response => {
       return response.data;

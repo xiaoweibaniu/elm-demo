@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { GET_USERINFO } from "./mutation-types";
+import { setStore } from "./helpers/utils";
+import { GET_USERINFO, RECORD_USERINFO } from "./mutation-types";
 import { getUser } from "./helpers/getData";
 
 Vue.use(Vuex);
@@ -11,6 +12,7 @@ export default new Vuex.Store({
     userInfo: null // 用户信息
   },
   mutations: {
+    // 获取账户信息
     [GET_USERINFO](state, info) {
       if (state.userInfo && state.userInfo.username !== info.username) {
         return;
@@ -23,6 +25,12 @@ export default new Vuex.Store({
       } else {
         state.userInfo = null;
       }
+    },
+    // 记录账户信息
+    [RECORD_USERINFO](state, info) {
+      state.userInfo = info;
+      state.login = true;
+      setStore("user_id", info.user_id);
     }
   },
   actions: {

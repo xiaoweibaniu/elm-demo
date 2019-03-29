@@ -3,7 +3,7 @@
     <head-top head-title="登录" go-back="true">
       <template v-slot:changeLogin>
         <div class="change_login" @click="changeLoginWay">
-          {{ loginWay ? "密码登录" : "短信登录" }}
+          {{ loginWay ? "短信登录" : "密码登录" }}
         </div>
       </template>
     </head-top>
@@ -37,7 +37,7 @@
           />
           <div class="captcha_code_container">
             <img :src="captchaCodeImg" v-show="captchaCodeImg" alt="" />
-            <div class="change_captcha" @click="setCaptchaCode">
+            <div class="change_captcha" @click="updateCaptchaCode">
               <p>看不清</p>
               <p>换一张</p>
             </div>
@@ -74,14 +74,19 @@
     <router-link to="/forget" class="to_forget" v-if="loginWay">
       忘记密码 ？
     </router-link>
-    <alert-tip v-show="showAlert" :alertText="alertText" @closeAlert="closeAlert"></alert-tip>
+    <alert-tip
+      v-show="showAlert"
+      :alertText="alertText"
+      @closeAlert="closeAlert"
+    ></alert-tip>
   </div>
 </template>
 
 <script>
 import headTop from "../components/head";
 import alertTip from "../components/common/alertTip";
-import { getCaptchaCode, checkUser } from "../helpers/getData";
+import { mapMutations } from "vuex";
+import { getCaptchaCode, checkUser, accountLogin } from "../helpers/getData";
 
 export default {
   data() {
@@ -89,12 +94,13 @@ export default {
       loginWay: true, // 登录方式，默认账号登录
       showPassword: false, // 是否显示密码
       phoneNumber: "", // 电话号码
+      smsCode: "", //短信验证码
       captchaCodeImg: "", // 验证码地址
       computedTime: 0, // 倒计时
       showAlert: false, // 显示提示组件
       alertText: null, // 提示的内容
       userAccount: "", // 账户名
-      userInfo: "", // 获取到的账户信息
+      userInfo: null, // 获取到的账户信息
       passWord: "", // 密码
       captchaCode: "" // 验证码
     };
@@ -105,18 +111,18 @@ export default {
   },
   created() {
     // 获取图片验证码
-    this.setCaptchaCode();
+    this.updateCaptchaCode();
   },
   computed: {
     // 校验手机号格式
     phoneResult() {
-      console.log(/^1[34578]\d{9}$/gi.test(this.phoneNumber));
       return /^1[34578]\d{9}$/gi.test(this.phoneNumber);
     }
   },
   methods: {
+    ...mapMutations(["RECORD_USERINFO"]),
     // 关闭提示组件
-    closeAlert(){
+    closeAlert() {
       this.showAlert = false;
     },
     // 改变登录方式
@@ -128,7 +134,7 @@ export default {
       this.showPassword = !this.showPassword;
     },
     // 获取图片验证码
-    async setCaptchaCode() {
+    async updateCaptchaCode() {
       let res = await getCaptchaCode();
       this.captchaCodeImg = res.code;
     },
@@ -157,14 +163,14 @@ export default {
           return;
         }
 
-        if(this.passWord === ""){
+        if (this.passWord === "") {
           // 密码信息为空时
           this.showAlert = true;
           this.alertText = "请填写正确的密码";
           return;
         }
 
-        if(this.captchaCode === ""){
+        if (this.captchaCode === "") {
           // 验证码信息为空时
           this.showAlert = true;
           this.alertText = "请填写正确的验证码";
@@ -172,9 +178,45 @@ export default {
         }
 
         // 提交用户账号信息
-        // this.userInfo ='';
+        this.userInfo = await accountLogin(
+          this.userAccount,
+          this.passWord,
+          this.captchaCode
+        );
       } else {
         // 短信登录
+        // TODO: 暂时未开通
+
+        // 密码登录
+        if (!this.phoneResult) {
+          // 手机号不正确时
+          this.showAlert = true;
+          this.alertText = "请填写正确的手机号";
+          return;
+        }
+
+        if (!/^\d{6}$/gi.test(this.smsCode)) {
+          // 验证码不正确时
+          this.showAlert = true;
+          this.alertText = "请填写正确的验证码";
+          return;
+        }
+
+        this.showAlert = true;
+        this.alertText = "手机号登录暂时未开通";
+      }
+
+      // 响应用户信息有问题时弹框显示错误信息
+      if (!this.userInfo.userInfo) {
+        this.showAlert = true;
+        this.alertText = this.userInfo.message;
+
+        // 当前登录方式为密码登录时更新验证码
+        this.loginWay && this.updateCaptchaCode();
+      } else {
+        this.RECORD_USERINFO(this.userInfo);
+        // 回退到主页面
+        this.$router.go(-1);
       }
     }
   }
