@@ -12,7 +12,7 @@ export default new Vuex.Store({
     userInfo: null // 用户信息
   },
   mutations: {
-    // 获取账户信息
+    // 更新账户信息
     [GET_USERINFO](state, info) {
       if (state.userInfo && state.userInfo.username !== info.username) {
         return;
@@ -35,6 +35,7 @@ export default new Vuex.Store({
   },
   actions: {
     async getUserInfo({ commit }) {
+      // 获取账户信息
       let res = await getUser();
       commit("GET_USERINFO", res);
     }
