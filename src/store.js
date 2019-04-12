@@ -9,7 +9,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     login: true, // 是否登录
-    userInfo: null // 用户信息
+    userInfo: null, // 用户信息
+    avatarPath: "" // 用户头像地址
   },
   mutations: {
     // 更新账户信息

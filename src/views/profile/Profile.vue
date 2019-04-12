@@ -9,7 +9,7 @@
         >
           <!-- 用户未登录时 -->
           <img
-            src=""
+            :src="imgBaseUrl + userInfo.avatar"
             alt="用户头像"
             class="private-image"
             v-if="userInfo && userInfo.user_id"
@@ -57,13 +57,13 @@
           </router-link>
           <router-link to="/balance" tag="li" class="info-data-link">
             <span class="data-number"
-              ><b>{{ parseInt(balance).toFixed(2) }}</b> 元</span
+              ><b>{{ count }}</b> 个</span
             >
             <span class="data-title">我的优惠</span>
           </router-link>
           <router-link to="/balance" tag="li" class="info-data-link">
             <span class="data-number"
-              ><b>{{ parseInt(balance).toFixed(2) }}</b> 元</span
+              ><b>{{ pointNumber }}</b> 分</span
             >
             <span class="data-title">我的积分</span>
           </router-link>
@@ -174,24 +174,56 @@
 </template>
 
 <script>
-import headTop from "../components/head";
+import { imgBaseUrl } from "../../helpers/env";
+import headTop from "../../components/head";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       profiletitle: "个人中心",
-      userInfo: null,
       username: "登录|注册", // 用户名
-      mobile: "暂无绑定手机号" // 手机号
+      mobile: "暂无绑定手机号", // 手机号
+      balance: 0, // 我的余额
+      count: 0, // 我的优惠券数
+      pointNumber: 0, // 我的积分数
+      imgBaseUrl
     };
   },
   components: {
     headTop
+  },
+  computed: {
+    ...mapState(["userInfo"])
+  },
+  mounted() {
+    // 初始化数据
+    this.initData();
+  },
+  methods: {
+    initData() {
+      if (this.userInfo && this.userInfo.user_id) {
+        console.log(this.userInfo);
+        this.username = this.userInfo.username;
+        this.mobile = this.userInfo.mobile || "暂无绑定手机号";
+        this.balance = this.userInfo.balance;
+        this.count = this.userInfo.gift_amount;
+        this.pointNumber = this.userInfo.point;
+      } else {
+        this.username = "登录|注册";
+        this.mobile = "暂无绑定手机号";
+      }
+    }
+  },
+  watch: {
+    userInfo(){
+      this.initData();
+    }
   }
 };
 </script>
 
 <style lang="scss">
-@import "../assets/styles/mixin";
+@import "../../assets/styles/mixin";
 
 .profile-page {
   p,
